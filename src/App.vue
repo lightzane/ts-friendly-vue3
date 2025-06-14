@@ -1,53 +1,30 @@
 <script setup lang="ts">
-import { /*computed,*/ onMounted, reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
-import fetchCount from '@/services/fetchCount';
+import Counter from '@/components/Counter.vue';
 
 interface AppInfo {
   name: string,
   slogan: string
 }
 
-// * Type Inference
-// const count = ref(0) // Inferred type: Ref<number>
-const count = ref<number | null>(null) // Inferred type: null, hence, specify via type annotation
-
 // * Type Annotation (i.e. AppInfo)
 const appInfo: AppInfo = reactive({
   name: 'Counter',
   slogan: 'an app you can count on'
 })
-
-// const nextCount = computed(()=>{
-//   if (count.value === null) {
-//     return null
-//   }
-
-//   return count.value + 1
-// })
-
-onMounted(()=>{
-  fetchCount((initialCount)=>{
-    count.value = initialCount
-  })
-})
-
-function addCount() {
-  if (count.value === null) {
-    return
-  }
-
-  count.value++
-}
 </script>
 
 <template>
   <div>
     <h1>{{ appInfo.name }}</h1>
     <h2>{{ appInfo.slogan }}</h2>
-    <p>{{ count }}</p>
-    <p>
-      <button @click="addCount">Add</button>
-    </p>
+    
+    <Counter 
+      :limit="10"
+    ></Counter>
+    <!-- 
+      :alert-message-on-limit="'Sobra na'"
+    -->
   </div>
 </template>
