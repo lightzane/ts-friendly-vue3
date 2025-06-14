@@ -40,6 +40,46 @@ Scaffolding project in /Users/lightzane/Documents/dev/ts-friendly-vue3...
    git init && git add -A && git commit -m "initial commit"
 ```
 
+## Update configuration to allow auto import modules
+
+`> settings.json` of **vscode**
+
+```json
+{
+  "typescript.preferences.importModuleSpecifier": "non-relative"
+}
+```
+
+And update ![tsconfig.app.json](./tsconfig.app.json) to include the `baseUrl`
+
+```json
+{
+  "baseUrl": ".",
+  "paths": {
+    "@/*": ["./src/*"]
+  }
+}
+```
+
+And if using **vite**:
+
+```ts
+defineConfig({
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+});
+```
+
+This should allow **vscode** to help you to automatically import modules:
+
+```ts
+// import HelloWorld from '../components/HelloWorld.vue' // instead of
+import HelloWorld from '@/components/HelloWorld.vue'; // like so
+```
+
 ## Notes
 
 Use **Composition API** via the `setup` in `<script>` to activate "**script setup**"
@@ -49,6 +89,52 @@ Use **Composition API** via the `setup` in `<script>` to activate "**script setu
 <script setup lang="ts">
 
 </script>
+```
+
+### Install vscode and its extension
+
+[Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
+### Reactive Variables
+
+- Using `ref` and `reactive`.
+- Also, the official convention is to put `<script>` before the `<template>` tag
+
+```vue
+<script setup lang="ts">
+import { onMounted, reactive, ref } from 'vue';
+
+import fetchCount from '@/services/fetchCount';
+
+interface AppInfo {
+  name: string;
+  slogan: string;
+}
+
+// * Type Inference
+// const count = ref(0) // Inferred type: Ref<number>
+const count = ref<number | null>(null); // Inferred type: null, hence, specify via type annotation
+
+// * Type Annotation (i.e. AppInfo)
+const appInfo: AppInfo = reactive({
+  name: 'Counter',
+  slogan: 'an app you can count on',
+});
+
+onMounted(() => {
+  fetchCount((initialCount) => {
+    count.value = initialCount;
+  });
+});
+</script>
+
+<template>
+  <div>
+    <h1>{{ appInfo.name }}</h1>
+    <h2>{{ appInfo.slogan }}</h2>
+    <p>{{ count }}</p>
+  </div>
+</template>
 ```
 
 ## Recommended IDE Setup
