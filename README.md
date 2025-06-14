@@ -40,6 +40,17 @@ Scaffolding project in /Users/lightzane/Documents/dev/ts-friendly-vue3...
    git init && git add -A && git commit -m "initial commit"
 ```
 
+## Notes
+
+Use **Composition API** via the `setup` in `<script>` to activate "**script setup**"
+
+```vue
+<!-- prettier-ignore -->
+<script setup lang="ts">
+
+</script>
+```
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
